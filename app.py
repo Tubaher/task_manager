@@ -1,14 +1,18 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from config import Config
+from models import db
+from controllers.task_controller import task_bp
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///tasks.db"
-db = SQLAlchemy(app)
+app.config.from_object(Config)
+db.init_app(app)
+
+app.register_blueprint(task_bp, url_prefix="/tasks")
 
 
-@app.route("/")
-def hello():
-    return "Hello, World!"
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 
 if __name__ == "__main__":
