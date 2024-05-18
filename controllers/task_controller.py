@@ -33,6 +33,19 @@ def get_tasks():
     return jsonify(tasks_list), 200
 
 
+@task_bp.route("/<int:id>", methods=["GET"])
+def get_task(id):
+    task = TaskService.get_task_by_id(id)
+    if not task:
+        return jsonify({"message": "Task not found"}), 404
+    return (
+        jsonify(
+            {"id": task.id, "title": task.title, "completed": task.completed}
+        ),
+        200,
+    )
+
+
 @task_bp.route("/<int:id>", methods=["PUT"])
 def complete_task(id):
     task = TaskService.complete_task(id)

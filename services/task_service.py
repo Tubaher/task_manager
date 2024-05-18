@@ -17,3 +17,7 @@ class TaskService:
     @staticmethod
     def delete_task(task_id):
         return TaskRepository.delete_task(task_id)
+
+    @staticmethod
+    def get_task_by_id(task_id):
+        return TaskRepository.get_task_by_id(task_id)
